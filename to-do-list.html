@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do-Lists</title>
+    <link rel="stylesheet" href="to-do-list.css">
+</head>
+<body>
+    <div class="main_container">
+        <h1>To-Do-Lists</h1>
+        <div class="input_section">
+            <input type="text" id="User_input" placeholder="what to do">
+            <input type="text" id="category_input" placeholder="Enter Category">
+            <select id="priority_input">
+                <option value="">Select Priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <input type="date" id="due_date_input" placeholder="Due Date">
+            <input type="text" id="tags_input" placeholder="Add Tags">
+            <button id="bt" onclick="addList()">Add</button>
+            <button id="bt" onclick="clearInput()">Clear Input</button>
+        </div>
+        <div class="sorting_options">
+            <label for="sort_by">Sort by:</label>
+            <select id="sort_by">
+                <option value="default">Default</option>
+                <option value="due_date">Due Date</option>
+                <option value="priority">Priority</option>
+                <option value="category">Category</option>
+            </select>
+            <button onclick="applySorting()">Sort</button>
+        </div>
+        <div class="filters">
+            <label for="due_date_filter">Filter by Due Date Range:</label>
+            <input type="date" id="start_date_filter">
+            <span>to</span>
+            <input type="date" id="end_date_filter">
+            <button onclick="applyDateRangeFilter()">Filter</button>
+            <button onclick="clearDateRangeFilter()">Clear Filter</button>
+            <label for="category_filter">Filter by Category:</label>
+            <select id="category_filter">
+            </select> 
+            <label for="priority_filter">Filter by Priority:</label>
+            <select id="priority_filter">
+                <option value="">All</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+        <div class="search">
+            <input type="text" id="search_input" placeholder="Search(Tags, Sub-tasks, To-dos)">
+            <button onclick="performSearch()">Search</button>
+            <button onclick="clearSearch()">Clear Search</button>
+        </div>
+    </div>
+    <div class="list_of_input_section">
+        <ul id="list_of_input"> </ul>
+    </div>
+    <script src="to-do-list.js"></script>
+</body>
+</html>

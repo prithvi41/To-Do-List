@@ -1,0 +1,226 @@
+* {
+	margin: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	color: #FFF;
+	background-color: #374151;
+}
+.main_container {
+    padding: 2rem 1rem;
+	width: 100%;
+	margin: 0 auto;
+    max-width: 600px;
+}
+h1 {
+    font-size: 2rem;
+	margin-bottom: 1rem;
+}
+
+#user_input {
+    border: purple;
+	padding: 0.5rem;
+	border-radius: 1rem;
+	margin-right: 1rem;
+    margin-bottom: 0.5rem;
+	font-size: 1.2rem;
+}
+#bt {
+    padding: 0.5rem;
+    border: purple;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+.list_of_input_section {
+    flex: 1 1 0%;
+	width: 100%;
+	margin: 0 auto;
+    max-width: 600px;
+}
+.list_append {
+    margin-bottom: 1rem;
+    margin-right: 0.5rem;
+    font-size: 1.5rem;
+}
+.delete_bt {
+    padding: 0.5rem;
+    border: purple;
+    background-color: red;
+    color: #FFF;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 1rem;
+}
+.edit_bt {
+    padding: 0.5rem;
+    border: purple;
+    background-color: blueviolet;
+    color: #FFF;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 1rem;
+}
+.save_bt {
+    padding: 0.5rem;
+    border: purple;
+    background-color: green;
+    color: #FFF;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+}
+.edit_bx {
+    border: purple;
+	padding: 0.5rem;
+	border-radius: 1rem;
+	margin-right: 1rem;
+	font-size: 1.2rem;
+}
+.checkbox {
+    border-radius: 1rem;
+    width: 20px;
+    height: 18px;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+#due_date_input{
+    padding: 0.5rem;
+    border: 1px solid purple;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+span {
+    color: blueviolet;
+    margin-left: 1rem;
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+#category_input {
+    padding: 0.5rem;
+    border: 1px solid purple;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+#priority_input, #tags_input{
+    padding: 0.5rem;
+    border: 1px solid purple;
+    border-radius: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+#priority_input option[value="low"] {
+    color: green;
+}
+#priority_input option[value="medium"] {
+    color: yellow;
+}
+#priority_input option[value="high"] {
+    color: red;
+}
+.priority_box {
+    display: inline-block;
+    width: 20;
+    height: 20px;
+    margin-left: 0.5rem;
+    border-radius: 80%;
+    margin-right: 1rem;
+}
+.low_priority {
+    background-color: green;
+}
+.medium_priority {
+    background-color: yellow;
+}
+.high_priority {
+    background-color: red;
+}
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.6rem;
+    background-color: purple;
+}
+.sorting_options {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: purple;
+    justify-content: space-between;
+    max-width: 230px;
+}
+.input_section {
+    display: flex;
+    flex-flow: row wrap;
+}
+.subtask_input {
+    padding: 0.5rem;
+    border: purple;
+    color: black;
+    border-radius: 1rem;
+    font-size: 1rem;
+    max-width: 150px;
+    margin-left: 1rem;
+} 
+.subtask_btn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 1rem;
+}
+.search {
+    display: flex;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: purple;
+    justify-content: space-between;
+    max-width: 400px;
+}
+#search_input {
+    width: 210px;
+}
+input#end_date_filter, input#start_date_filter {
+    margin-bottom: 0.5rem;
+}
+select#category_filter, select#priority_filter {
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+}
+.sorting_options button, select#sort_by, .search button {
+    cursor: pointer;
+}
+.filters span {
+    margin: 0 10px;
+    color: #fff;
+}
+.filters button {
+    padding: 3px 6px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 0.2rem;
+}
