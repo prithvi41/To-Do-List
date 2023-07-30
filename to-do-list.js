@@ -1,13 +1,24 @@
 // Array to store list of to-do items
 var inputs = [];
 var originalInputs = [];
-var categories = []; 
+var categories = [];  
+var activityLogs = []; 
+
 // Adding local storage
 if (localStorage.getItem("inputs")) {
     inputs= JSON.parse(localStorage.getItem("inputs"));
     originalInputs = inputs.slice();
     renderInputs();
 }
+// Adding activity logs from local storage
+if (localStorage.getItem("activityLogs")) {
+    activityLogs = JSON.parse(localStorage.getItem("activityLogs"));
+  }
+// Save activity logs to local storage
+function saveActivityLogsToLocalStorage() {
+    localStorage.setItem("activityLogs", JSON.stringify(activityLogs));
+  }
+  
 // Function to add to the array
 function addList() {
     const User_input = document.getElementById("User_input");
@@ -18,7 +29,7 @@ function addList() {
     const Input_str = User_input.value.trim();
     const Category_str = Category_input.value.trim();
     const Priority_str = Priority_input.value;
-    const Due_date_str = Due_date_input.value;
+    const Due_date_str = createDueDateFromText(Input_str, Due_date_input.value);
     const Tags_str = Tags_input.value.trim(); 
     if (Input_str != '' && Category_str !== '' && Priority_str !== '') {
         const newInput = {
@@ -39,6 +50,14 @@ function addList() {
             originalInputs.push(Category_str);
             saveCategories_toLocalStorage();
         }
+        // Activity Of Adding Task
+        const activityLog = {
+            timestamp: new Date().toISOString(),
+            action: 'add',
+            taskId: newInput.id,
+        };
+        activityLogs.push(activityLog);
+        saveActivityLogsToLocalStorage();
         saveInputs_toLocalStorage();
         renderInputs();
         User_input.value = '';
@@ -78,6 +97,14 @@ function saveItem(id, newInput) {
             elem.editing = false; 
         }
     });
+    // Add activity log for task edit
+    const activityLog = {
+        timestamp: new Date().toISOString(),
+        action: 'edit',
+        taskId: id
+    };
+    activityLogs.push(activityLog);
+    saveActivityLogsToLocalStorage();
     saveInputs_toLocalStorage();
     renderInputs();
 }
@@ -92,9 +119,32 @@ function removeLists(id) {
             saveCategories_toLocalStorage();
         }
     }
+    // Add activity log for task deletion
+    const activityLog = {
+        timestamp: new Date().toISOString(),
+        action: 'delete',
+        taskId: id
+    };
+    activityLogs.push(activityLog);
+    saveActivityLogsToLocalStorage();
     saveInputs_toLocalStorage();
     renderInputs();
 }
+// Function to display activity logs
+function displayActivityLogs() {
+    const activityLogList = document.getElementById("activity_log_list");
+    activityLogList.innerHTML = '';
+    activityLogs.forEach(activity => {
+        const li = document.createElement("li");
+        li.textContent = `${activity.timestamp}: Task ${activity.action} (ID: ${activity.taskId})`;
+        activityLogList.appendChild(li);
+    });
+    const toDoListContainer = document.getElementById("list_of_input");
+    const activityLogListContainer = document.getElementById("activity_log_list");
+    toDoListContainer.style.display = "none";
+    activityLogListContainer.style.display = "block";
+}
+document.getElementById("activity_logs_button").addEventListener("click", displayActivityLogs);
 // mark task as done
 function toggleCompleted(id) {
     inputs.forEach(elem => {
@@ -360,3 +410,92 @@ function applySorting() {
     renderInputs(sortedInputs); 
 }
 document.querySelector(".sorting_options button").addEventListener("click", applySorting);
+// Extract the date from input text
+function extractDateFromInput(inputText) {
+    // Regular expression to match date formats
+    const datePattern =
+      /(\btomorrow\b)|((\d{1,2}(st|nd|rd|th)? (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4})( \d{1,2}:\d{1,2} (am|pm))?)|((\d{1,2}(st|nd|rd|th)? (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}))/i;
+    const dateMatch = inputText.match(datePattern);
+    return dateMatch ? dateMatch[0] : null;
+}
+function createDueDateFromText(todoText, dueDateInputValue) {
+    const extractedDate = extractDateFromInput(todoText);
+    let dueDate;
+    if (dueDateInputValue) {
+        dueDate = new Date(dueDateInputValue);
+    }
+    else if (extractedDate) {
+      const currentDate = new Date();
+      if (extractedDate.toLowerCase() === 'tomorrow') {
+        dueDate = new Date(currentDate);
+        dueDate.setDate(currentDate.getDate() + 1);
+        //const updatedTodoText = todoText.replace(extractedDate, '').trim();
+        document.getElementById("User_input").value = todoText.replace(extractedDate, '').trim();
+      } else {
+        dueDate = new Date(extractedDate);
+      }
+    }
+    if (dueDate) {
+      document.getElementById("due_date_input").value = dueDate.toISOString().split('T')[0];
+      return dueDate.toISOString().split('T')[0];
+    }
+    return null;
+}
+function viewBacklogs() {
+    const backlogs = inputs.filter(task => !task.completed);
+    renderInputs(backlogs);
+}
+document.getElementById("view_backlogs_button").addEventListener("click", viewBacklogs);
+function clearTasks() {
+    renderInputs();
+}
+document.getElementById("clear_button").addEventListener("click", clearTasks);
+// add drag and drop for tasks
+function addDragAndDropSupport() {
+    const taskListItems = document.querySelectorAll('.list_append:not(.subtask)');
+    taskListItems.forEach((item) => {
+        item.draggable = true;
+        item.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('text/plain', item.id);
+        });
+    });
+    // drag and drop for subtasks
+    const subtaskListItems = document.querySelectorAll('.subtasks_list li');
+    subtaskListItems.forEach((subtaskItem) => {
+        subtaskItem.draggable = true;
+        subtaskItem.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('text/plain', subtaskItem.id);
+        });
+    });
+    // dragover and rearrange tasks and subtasks
+    function handleDragOver(event) {
+        event.preventDefault();
+        const draggedItemId = event.dataTransfer.getData('text/plain');
+        const draggedItem = document.getElementById(draggedItemId);
+        const closestItem = getClosestItem(event.clientY, taskListItems);
+        if (closestItem) {
+            const isSubtask = draggedItem.classList.contains('subtask');
+            const isSameLevel = closestItem.classList.contains('subtasks_list') === isSubtask;
+            if (isSameLevel) {
+                const container = isSubtask ? closestItem : document.getElementById('list_of_input');
+                container.insertBefore(draggedItem, closestItem);
+            }
+        }
+    }
+    // find the closest item during drag and drop
+    function getClosestItem(yPosition, items) {
+        return [...items].reduce((closest, item) => {
+            const box = item.getBoundingClientRect();
+            const offset = yPosition - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset, element: item };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+    const listContainer = document.getElementById('list_of_input');
+    listContainer.addEventListener('dragover', handleDragOver);
+}
+renderInputs();
+addDragAndDropSupport();

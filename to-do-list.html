@@ -22,6 +22,11 @@
             <button id="bt" onclick="addList()">Add</button>
             <button id="bt" onclick="clearInput()">Clear Input</button>
         </div>
+        <div class="activity">
+            <button id="view_backlogs_button">View Backlogs</button>
+            <button id="clear_button">Clear</button>
+            <button id="activity_logs_button">Activity Logs</button>
+        </div>
         <div class="sorting_options">
             <label for="sort_by">Sort by:</label>
             <select id="sort_by">
@@ -59,6 +64,8 @@
     <div class="list_of_input_section">
         <ul id="list_of_input"> </ul>
     </div>
+    <ul id="activity_log_list"></ul>
+
     <script src="to-do-list.js"></script>
 </body>
 </html>

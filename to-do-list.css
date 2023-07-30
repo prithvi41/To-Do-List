@@ -14,7 +14,7 @@ body {
     padding: 2rem 1rem;
 	width: 100%;
 	margin: 0 auto;
-    max-width: 600px;
+    max-width: 1200px;
 }
 h1 {
     font-size: 2rem;
@@ -42,7 +42,7 @@ h1 {
     flex: 1 1 0%;
 	width: 100%;
 	margin: 0 auto;
-    max-width: 600px;
+    max-width: 1200px;
 }
 .list_append {
     margin-bottom: 1rem;
@@ -191,6 +191,21 @@ span {
     cursor: pointer;
     font-size: 14px;
     margin-left: 1rem;
+}
+.activity {
+    display: flex;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    background-color: purple;
+    justify-content: space-between;
+    max-width: 300px;
+}
+button#clear_button {
+    margin-right: 1.5rem;
+    cursor: pointer;
+}
+button#view_backlogs_button, button#activity_logs_button {
+    cursor: pointer;
 }
 .search {
     display: flex;
